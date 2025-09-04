@@ -1,5 +1,4 @@
 # make-idcard.ps1
-# quick & dirty, stand: 2025-09-04
 # aufruf: .\make-idcard.ps1 "Org,Name,Role,ID,Valid,PhotoFile,OutFile"
 
 Param([string]$ArgsLine)
@@ -88,4 +87,5 @@ if ($qr) {
 # cleanup
 Remove-Item m_base.png,m_photo.png,m_qr.png,m_mask.png,m_ptmp.png,m_pmask.png,m_rounded.png -ErrorAction SilentlyContinue
 Write-Host "fertig -> $Out"
+
 
