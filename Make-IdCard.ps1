@@ -1,7 +1,7 @@
 # make-idcard.ps1
 Param()
 
-# -- pfad zu imagemagick (bitte anpassen, so laeuft es bei mir) --
+# -- pfad zu imagemagick (bitte anpassen, so lauft es bei mir) --
 $MagickPath = "C:\Program Files (x86)\ImageMagick-7.1.2-Q16-HDRI\magick.exe"
 
 # simple check
@@ -17,7 +17,7 @@ $env:MAGICK_CODER_MODULE_PATH = Join-Path $MagickDir "modules\coders"
 $env:MAGICK_CONFIGURE_PATH    = $MagickDir
 if ($env:Path -notlike "*$MagickDir*") { $env:Path += ";$MagickDir" }
 
-# mini probe (hat mir beim debuggen geholfen)
+
 & $MagickPath -size 8x8 xc:#FFFFFF _probe.png 2>$null
 if (-not (Test-Path "_probe.png")) {
   Write-Host "ImageMagick mag 'xc:' nicht -> evtl. powershell neu starten oder install checken"
@@ -38,12 +38,12 @@ $Valid    = Read-Host "Gueltig bis (z.B. 09/2026)"
 $PhotoFile = Read-Host "Gib den Namen des Bildes aus dem Ordner $PhotoDir an (oder leer lassen)"
 $FileName = Read-Host "Dateiname der Ausgabedatei (z.B. idcard.png)"
 
-# defaults falls leer (machts mir einfacher)
+# defaults falls leer 
 if ([string]::IsNullOrWhiteSpace($FileName)) { $FileName = "idcard.png" }
 $Photo = if ([string]::IsNullOrWhiteSpace($PhotoFile)) { "" } else { Join-Path $PhotoDir $PhotoFile }
 $Out   = Join-Path $OutDir $FileName
 
-# layout (nicht perfekt, aber ok)
+# layout 
 $WIDTH=1011; $HEIGHT=638
 $HEADER=140; $MARGIN=60
 $ACCENT="#0F766E"; $TEXT="#111111"; $SUBT="#444444"; $BG="#FFFFFF"
@@ -79,7 +79,7 @@ if (-not [string]::IsNullOrWhiteSpace($Photo) -and (Test-Path $Photo)) {
   # kein foto -> ok, mache einfach weiter
 }
 
-# qr (nur wenn vorhanden – ich nutze es manchmal)
+
 $qr = Get-Command qrencode -ErrorAction SilentlyContinue
 if ($qr) {
   $payload = "$FullName | $CardId"
@@ -100,3 +100,4 @@ if ($qr) {
 Remove-Item m_base.png,m_photo.png,m_qr.png,m_mask.png,m_ptmp.png,m_pmask.png,m_rounded.png -ErrorAction SilentlyContinue
 
 Write-Host "fertig -> $Out"
+
